@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="dev-favicon.svg">
+    <title>Pranav Sri Vasthav - Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="particles.js" defer></script>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-animation">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">P<span class="highlight">.</span>SV</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Home </a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <button class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-nav-links">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div id="home" class="section hero">
+        <div class="hero-content">
+            <div class="hero-main">
+                <div class="name-container">
+                    <div class="name-content">
+                        <h1 class="glitch" data-text="Hello, I'm Pranav">Hello, I'm Pranav</h1>
+                        <div class="typing-container">
+                            <span class="static-text">I'm a </span>
+                            <span class="dynamic-text"></span>
+                        </div>
+                    </div>
+                    <div class="decorative-element">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+                            <defs>
+                                <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1" />
+                                </linearGradient>
+                                <filter id="blur-glow">
+                                    <feGaussianBlur stdDeviation="2" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                            </defs>
+                            <!-- Rotating hexagon -->
+                            <path d="M150 50 L225 87.5 L225 162.5 L150 200 L75 162.5 L75 87.5 Z" 
+                                fill="none" 
+                                stroke="url(#glow)" 
+                                stroke-width="2"
+                                filter="url(#blur-glow)">
+                                <animateTransform
+                                    attributeName="transform"
+                                    type="rotate"
+                                    from="0 150 150"
+                                    to="360 150 150"
+                                    dur="20s"
+                                    repeatCount="indefinite" />
+                            </path>
+                            <!-- Pulsing circles -->
+                            <circle cx="150" cy="150" r="40" 
+                                    fill="none" 
+                                    stroke="url(#glow)" 
+                                    stroke-width="1.5"
+                                    opacity="0.6">
+                                <animate
+                                    attributeName="r"
+                                    values="40;45;40"
+                                    dur="3s"
+                                    repeatCount="indefinite" />
+                            </circle>
+                            <!-- Rotating dots -->
+                            <g>
+                                <circle cx="150" cy="90" r="3" fill="#4F46E5">
+                                    <animateTransform
+                                        attributeName="transform"
+                                        type="rotate"
+                                        from="0 150 150"
+                                        to="360 150 150"
+                                        dur="8s"
+                                        repeatCount="indefinite" />
+                                </circle>
+                                <circle cx="150" cy="210" r="3" fill="#06B6D4">
+                                    <animateTransform
+                                        attributeName="transform"
+                                        type="rotate"
+                                        from="180 150 150"
+                                        to="540 150 150"
+                                        dur="8s"
+                                        repeatCount="indefinite" />
+                                </circle>
+                            </g>
+                            <!-- Digital circuit lines -->
+                            <path d="M75 150 Q 100 150, 100 175 T 150 175" 
+                                fill="none" 
+                                stroke="#4F46E5" 
+                                stroke-width="1"
+                                opacity="0.5">
+                                <animate
+                                    attributeName="stroke-dasharray"
+                                    values="0,1000;1000,0"
+                                    dur="4s"
+                                    repeatCount="indefinite" />
+                            </path>
+                            <path d="M225 150 Q 200 150, 200 125 T 150 125" 
+                                fill="none" 
+                                stroke="#06B6D4" 
+                                stroke-width="1"
+                                opacity="0.5">
+                                <animate
+                                    attributeName="stroke-dasharray"
+                                    values="1000,0;0,1000"
+                                    dur="4s"
+                                    repeatCount="indefinite" />
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <p class="hero-description">Crafting digital experiences through innovative web solutions</p>
+                <div class="cta-buttons">
+                    <a href="#projects" class="primary-btn">View My Work</a>
+                    <a href="#contact" class="secondary-btn">Get in Touch</a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <div class="arrows">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="section-header">
+            <h2>About Me</h2>
+            <div class="section-decoration"></div>
+        </div>
+        <div class="about-content">
+            <div class="about-text">
+                <p>I'm a passionate Full Stack Developer with expertise in creating modern web applications. With a strong foundation in both front-end and back-end development, I strive to build scalable and user-friendly solutions that make a difference.</p>
+                <div class="tech-stack">
+                    <h3>Tech Stack</h3>
+                    <div class="tech-grid">
+                        <div class="tech-item" data-tech="HTML5">
+                            <i class="fab fa-html5"></i>
+                        </div>
+                        <div class="tech-item" data-tech="CSS3">
+                            <i class="fab fa-css3-alt"></i>
+                        </div>
+                        <div class="tech-item" data-tech="JavaScript">
+                            <i class="fab fa-js"></i>
+                        </div>
+                        <div class="tech-item" data-tech="React">
+                            <i class="fab fa-react"></i>
+                        </div>
+                        <div class="tech-item" data-tech="Node.js">
+                            <i class="fab fa-node-js"></i>
+                        </div>
+                        <div class="tech-item" data-tech="Python">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <div class="tech-item" data-tech="Git">
+                            <i class="fab fa-git-alt"></i>
+                        </div>
+                        <div class="tech-item" data-tech="Database">
+                            <i class="fas fa-database"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="section-header">
+            <h2>Featured Projects</h2>
+            <div class="section-decoration"></div>
+        </div>
+        <div class="projects-filter">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="web">Web Dev</button>
+            <button class="filter-btn" data-filter="app">App Dev</button>
+            <button class="filter-btn" data-filter="design">Design</button>
+        </div>
+        <div class="project-gallery">
+            <!-- Project Card 1 -->
+            <div class="project-card" data-category="web">
+                <div class="project-image">
+                    <img src="/api/placeholder/400/300" alt="Project 1">
+                    <div class="project-overlay">
+                        <div class="project-links">
+                            <a href="#" class="project-link" target="_blank">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                            <a href="#" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>Project Title 1</h3>
+                    <p>A modern web application built with React and Node.js</p>
+                    <div class="project-tags">
+                        <span>React</span>
+                        <span>Node.js</span>
+                        <span>MongoDB</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more project cards here -->
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="section-header">
+            <h2>Get In Touch</h2>
+            <div class="section-decoration"></div>
+        </div>
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    <p>tgpranav0@gmail.com</p>
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Location</h3>
+                    <p>Hyderabad, India</p>
+                </div>
+            </div>
+            <form id="contact-form" class="contact-form">
+                <div class="form-group">
+                    <input type="text" required>
+                    <label>Your Name</label>
+                    <div class="line"></div>
+                </div>
+                <div class="form-group">
+                    <input type="email" required>
+                    <label>Your Email</label>
+                    <div class="line"></div>
+                </div>
+                <div class="form-group">
+                    <textarea required></textarea>
+                    <label>Your Message</label>
+                    <div class="line"></div>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <span class="logo-text">P<span class="highlight">.</span>SV</span>
+            </div>
+            <div class="social-links">
+                <a href="https://github.com" class="social-link" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://linkedin.com" class="social-link" target="_blank">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://twitter.com" class="social-link" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://instagram.com" class="social-link" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Pranav Sri Vasthav. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
