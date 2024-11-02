@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Multi-text typing effect for hero section
-    const typingTexts = ["Web Developer", "UI/UX Designer", "Full Stack Developer"];
+    const typingTexts = ["Web Developer", "Full Stack Developer", "Data Engineer", "Python Developer"];
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;

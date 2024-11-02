@@ -50,11 +50,11 @@ body {
     background: var(--primary-color);
 }
 
-.cursor-outline {
+/* .cursor-outline {
     width: 40px;
     height: 40px;
     border: 2px solid var(--primary-color);
-}
+} */
 
 /* Loading Screen */
 .loading-screen {
@@ -241,6 +241,8 @@ nav {
     flex-direction: column;
     align-items: center;
     gap: 15px;
+    z-index: 1; /* Ensure it's below interactive elements */
+    pointer-events: none; /* Prevent it from blocking clicks */
 }
 
 .mouse {
@@ -898,12 +900,23 @@ footer {
     height: 100%;
     z-index: -1;
     cursor: pointer; /* Shows pointer cursor on hover */
+    background: rgba(0, 0, 0, 0.9);
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
     pointer-events: all; /* Ensures content remains clickable */
+}
+
+.hero-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    width: 100%;
+    padding: 0 20px;
+    position: relative;
 }
 
 /* Ensure all sections have proper z-index and positioning */
@@ -924,32 +937,175 @@ footer {
 
 .name-container {
     display: flex;
-    gap: 30rem;
+    gap: 10rem;
     margin-bottom: 1.5rem;
+    position: relative;
+    width: 100%;
 }
 
 .decorative-element {
     width: 700px;
-    height: 350px;
-    animation: float 6s ease-in-out infinite;
+    height: 300px;
+    animation: float 3s ease-in-out infinite;
+    position: absolute;
+    top: -125px;
+    left: 850px;
 }
 
-.decorative-element img {
+.decorative-element svg {
     width: 100%;
     height: 100%;
 }
 
 /* For mobile responsiveness */
+@media (max-width: 1200px) {
+    .name-container {
+        gap: 5rem;
+    }
+    
+    .decorative-element {
+        width: 500px;
+        left: 600px;
+    }
+}
+
+@media (max-width: 992px) {
+    .decorative-element {
+        width: 400px;
+        left: 500px;
+    }
+    
+    .name-content {
+        max-width: 600px;
+    }
+}
+
 @media (max-width: 768px) {
+    .hero-content {
+        flex-direction: column;
+        padding: 0 15px;
+    }
+
     .name-container {
         flex-direction: column;
+        gap: 2rem;
         align-items: center;
         text-align: center;
     }
     
-    .decorative-element {
-        width: 150px;
-        height: 150px;
-        margin-top: 1rem;
+    .name-content {
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
     }
+    
+    .decorative-element {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        top: 0;
+        left: 0;
+        margin: 20px auto;
+    }
+    
+    .social-links1 {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .decorative-element {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .name-content {
+        font-size: 1.2rem;
+    }
+    
+    .social-link1 {
+        font-size: 1.8rem;
+    }
+}
+
+
+.name-content {
+    font-size: 1.5rem;
+    width: 100%;
+    max-width: 790px;
+}
+
+.social-links1 {
+    display: flex;
+    gap: 40px;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+.social-link1 {
+    color: var(--text-secondary);
+    font-size: 2.2rem;
+    transition: color 0.3s;
+}
+
+.social-link1:hover {
+    color: var(--primary-color);
+}
+
+.banner-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 1rem auto;
+    background: #111;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.banner-container svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 0 3px rgba(0, 255, 65, 0.2));
+}
+
+@media (max-width: 768px) {
+    .scroll-indicator {
+        bottom: 0px; /* Move up to avoid overlapping with buttons */
+        transform: translateX(-50%) scale(0.9); /* Slightly smaller on tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .scroll-indicator {
+        bottom: 0px; /* Move up further on mobile */
+        transform: translateX(-50%) scale(0.8); /* Even smaller on mobile */
+    }
+    
+    .mouse {
+        width: 25px;
+        height: 40px;
+    }
+    
+    .wheel {
+        width: 3px;
+        height: 6px;
+    }
+    
+    .arrows span {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+/* Hide scroll indicator when near the bottom of the page */
+@media (max-height: 600px) {
+    .scroll-indicator {
+        display: none;
+    }
+}
+
+/* Ensure proper layering with other elements */
+.cta-buttons {
+    position: relative;
+    z-index: 2; /* Higher than scroll-indicator */
 }

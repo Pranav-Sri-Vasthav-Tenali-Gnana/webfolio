@@ -12,25 +12,72 @@ class ParticleBackground {
         this.isHovering = false;
         this.scrollOffset = 0;
         this.particleSettings = {
-            density: 15000, // Higher number = fewer particles
-            minSize: 1,
-            maxSize: 3,
+            density: 15000,
+            minSize: 20,
+            maxSize: 30,
             speed: 1,
             connectionRadius: 100,
-            connectionOpacity: 0.5
+            connectionOpacity: 0.5,
+            particleImageSize: 30
+        };
+
+        // Create and load the particle image
+        this.particleImage = new Image();
+        this.particleImage.crossOrigin = "Anonymous";
+        this.particleImage.src = '/Pranav.jpg'; // Update with your image path
+        
+        this.particleImage.onload = () => {
+            this.createOptimizedImage();
+            this.init();
         };
         
-        // Enhanced event listeners
         this.setupEventListeners();
-        
-        // Set canvas size
         this.setCanvasSize();
-        
-        // Initialize particles
-        this.init();
-        
-        // Start animation
         this.animate();
+    }
+
+    createOptimizedImage() {
+        const targetSize = this.particleSettings.particleImageSize;
+        
+        // Create temporary canvas for image resizing
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = targetSize;
+        tempCanvas.height = targetSize;
+        const tempCtx = tempCanvas.getContext('2d');
+        
+        // Calculate aspect ratio
+        const aspectRatio = this.particleImage.width / this.particleImage.height;
+        let drawWidth = targetSize;
+        let drawHeight = targetSize;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        // Adjust dimensions to maintain aspect ratio
+        if (aspectRatio > 1) {
+            drawHeight = targetSize / aspectRatio;
+            offsetY = (targetSize - drawHeight) / 2;
+        } else {
+            drawWidth = targetSize * aspectRatio;
+            offsetX = (targetSize - drawWidth) / 2;
+        }
+
+        // Create the final offscreen canvas for the circular image
+        this.offscreenCanvas = document.createElement('canvas');
+        this.offscreenCanvas.width = targetSize;
+        this.offscreenCanvas.height = targetSize;
+        const offscreenCtx = this.offscreenCanvas.getContext('2d');
+
+        // First draw the resized image
+        tempCtx.drawImage(this.particleImage, offsetX, offsetY, drawWidth, drawHeight);
+
+        // Then create the circular clipped version
+        offscreenCtx.save();
+        offscreenCtx.beginPath();
+        offscreenCtx.arc(targetSize/2, targetSize/2, targetSize/2, 0, Math.PI * 2);
+        offscreenCtx.closePath();
+        offscreenCtx.clip();
+        offscreenCtx.drawImage(tempCanvas, 0, 0, targetSize, targetSize);
+        offscreenCtx.restore();
     }
     
     setupEventListeners() {
@@ -65,7 +112,7 @@ class ParticleBackground {
     
     setCanvasSize() {
         this.canvas.width = window.innerWidth;
-        this.canvas.height = document.documentElement.scrollHeight; // Cover full page height
+        this.canvas.height = window.innerHeight;
         this.init(); // Reinitialize particles when canvas is resized
     }
     
@@ -88,6 +135,7 @@ class ParticleBackground {
     
     createParticle(x, y, isExplosion = false) {
         const speedMultiplier = isExplosion ? 3 : this.particleSettings.speed;
+        const baseSize = this.particleSettings.particleImageSize / 10;
         const size = isExplosion ? 
             Math.random() * 4 + 2 : 
             Math.random() * (this.particleSettings.maxSize - this.particleSettings.minSize) + this.particleSettings.minSize;
@@ -95,15 +143,16 @@ class ParticleBackground {
         return {
             x: x || Math.random() * this.canvas.width,
             y: y || Math.random() * this.canvas.height,
-            size: size,
+            size: size * baseSize,
             speedX: (Math.random() * 2 - 1) * speedMultiplier,
             speedY: (Math.random() * 2 - 1) * speedMultiplier,
             color: isExplosion ? `hsl(${Math.random() * 360}, 100%, 50%)` : '#00ff9d',
             life: isExplosion ? 1 : undefined,
             rotation: Math.random() * Math.PI * 2,
             rotationSpeed: (Math.random() * 2 - 1) * 0.02,
-            oscillationAmplitude: Math.random() * 2, // For wavy motion
-            oscillationOffset: Math.random() * Math.PI * 2
+            oscillationAmplitude: Math.random() * 2,
+            oscillationOffset: Math.random() * Math.PI * 2,
+            useImage: !isExplosion
         };
     }
     
@@ -123,9 +172,20 @@ class ParticleBackground {
         
         if (particle.life !== undefined) {
             this.ctx.globalAlpha = particle.life;
-            this.ctx.fillStyle = particle.color;
-            this.ctx.fillRect(-particle.size, -particle.size, particle.size * 2, particle.size * 2);
+        }
+        
+        if (particle.useImage && this.offscreenCanvas) {
+            // Draw the optimized circular image
+            const size = particle.size;
+            this.ctx.drawImage(
+                this.offscreenCanvas,
+                -size,
+                -size,
+                size * 2,
+                size * 2
+            );
         } else {
+            // Fallback to circle drawing
             this.ctx.fillStyle = particle.color;
             this.ctx.beginPath();
             this.ctx.arc(0, 0, particle.size, 0, Math.PI * 2);
@@ -162,7 +222,7 @@ class ParticleBackground {
                 }
             }
             
-            // Wrap around screen with padding
+            // Wrap around screen
             const padding = 50;
             if (particle.x > this.canvas.width + padding) particle.x = -padding;
             if (particle.x < -padding) particle.x = this.canvas.width + padding;
@@ -200,16 +260,6 @@ class ParticleBackground {
                         this.ctx.lineTo(b.x, b.y);
                         this.ctx.stroke();
                     }
-                }
-            });
-        }
-        
-        // Color cycling effect when hovering
-        if (this.isHovering) {
-            this.hue = (this.hue + 0.5) % 360;
-            this.particles.forEach(particle => {
-                if (particle.life === undefined) {
-                    particle.color = `hsl(${this.hue}, 100%, 50%)`;
                 }
             });
         }
