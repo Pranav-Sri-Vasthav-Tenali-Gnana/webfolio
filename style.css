@@ -1104,8 +1104,980 @@ footer {
     }
 }
 
+/* ===== Experience Timeline ===== */
+.timeline {
+    position: relative;
+    max-width: 850px;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--gradient-primary);
+    opacity: 0.5;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 45px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -30px;
+    top: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--background);
+    border: 3px solid var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 255, 163, 0.6);
+}
+
+.timeline-content {
+    background: var(--surface);
+    border-radius: 15px;
+    padding: 25px 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.timeline-content:hover {
+    transform: translateX(6px);
+    box-shadow: var(--neon-shadow);
+}
+
+.timeline-date {
+    display: inline-block;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: rgba(0, 255, 163, 0.08);
+    padding: 4px 12px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+}
+
+.timeline-content h3 {
+    font-size: 1.35em;
+    margin-bottom: 2px;
+}
+
+.timeline-content h4 {
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+}
+
+.timeline-client {
+    color: var(--secondary-color);
+}
+
+.timeline-content ul {
+    list-style: none;
+    margin-bottom: 16px;
+}
+
+.timeline-content ul li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 0.95em;
+}
+
+.timeline-content ul li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+}
+
+.timeline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.timeline-tags span {
+    padding: 4px 12px;
+    background: var(--background);
+    border-radius: 15px;
+    font-size: 0.75em;
+    color: var(--text-secondary);
+}
+
+/* ===== Education Cards ===== */
+.education-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    max-width: 850px;
+    width: 100%;
+    margin: 20px auto 0;
+}
+
+.edu-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    background: var(--surface);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.edu-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--neon-shadow);
+}
+
+.edu-card i {
+    font-size: 1.8em;
+    color: var(--primary-color);
+    margin-top: 4px;
+}
+
+.edu-card h3 {
+    font-size: 1.1em;
+    margin-bottom: 4px;
+}
+
+.edu-school {
+    color: var(--text-primary);
+    font-size: 0.95em;
+}
+
+.edu-meta {
+    color: var(--text-secondary);
+    font-size: 0.85em;
+}
+
+/* ===== Project icon banners ===== */
+.project-image {
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 255, 163, 0.12), rgba(0, 136, 255, 0.12));
+}
+
+.project-icon {
+    font-size: 3.5em;
+    color: var(--primary-color);
+    filter: drop-shadow(0 0 12px rgba(0, 255, 163, 0.4));
+}
+
+.project-badge {
+    display: inline-block;
+    font-size: 0.7em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--background);
+    background: var(--gradient-primary);
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.project-info h3 {
+    font-size: 1.25em;
+}
+
 /* Ensure proper layering with other elements */
 .cta-buttons {
     position: relative;
     z-index: 2; /* Higher than scroll-indicator */
+}
+
+/* =========================================================
+   FUTURISTIC / INTERACTIVE LAYER
+   ========================================================= */
+
+/* Size content sections to their content (kills dead vertical space) */
+.section:not(.hero) {
+    min-height: auto;
+}
+
+/* Animated neon grid inside each content section */
+.section:not(.hero)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(0, 255, 163, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 163, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 78%);
+    mask-image: radial-gradient(ellipse at center, #000 35%, transparent 78%);
+    animation: gridDrift 18s linear infinite;
+}
+
+@keyframes gridDrift {
+    from { background-position: 0 0, 0 0; }
+    to   { background-position: 40px 40px, 40px 40px; }
+}
+
+/* Animated gradient section headings */
+.section-header h2 {
+    background: linear-gradient(90deg,
+        var(--primary-color), var(--secondary-color),
+        var(--accent-color), var(--primary-color));
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hueSlide 8s linear infinite;
+}
+
+@keyframes hueSlide {
+    to { background-position: -300% center; }
+}
+
+/* Glassy neon cards */
+.project-card,
+.timeline-content,
+.edu-card,
+.contact-card,
+.game-card {
+    background: rgba(17, 17, 17, 0.55);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 255, 163, 0.12);
+    transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    will-change: transform;
+}
+
+.project-card:hover,
+.timeline-content:hover,
+.edu-card:hover,
+.contact-card:hover,
+.game-card:hover {
+    border-color: rgba(0, 255, 163, 0.5);
+    box-shadow: 0 12px 45px rgba(0, 255, 163, 0.12),
+                0 0 0 1px rgba(0, 255, 163, 0.22);
+}
+
+/* Top scanline accent that sweeps in on hover */
+.project-card::before,
+.game-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s ease;
+    z-index: 4;
+}
+
+.project-card:hover::before,
+.game-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* keep card text above the grid/glow */
+.project-info,
+.project-image,
+.timeline-content > *,
+.edu-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Button shine sweep */
+.primary-btn,
+.secondary-btn,
+.game-btn,
+.filter-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.primary-btn::after,
+.secondary-btn::after,
+.game-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -130%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s ease;
+    pointer-events: none;
+}
+
+.primary-btn:hover::after,
+.secondary-btn:hover::after,
+.game-btn:hover::after {
+    left: 150%;
+}
+
+/* ===== Arcade / Game ===== */
+.arcade-sub {
+    max-width: 560px;
+    text-align: center;
+    color: var(--text-secondary);
+    margin: -30px auto 35px;
+    font-size: 1.05em;
+    position: relative;
+    z-index: 2;
+}
+
+.arcade-sub .neon {
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 255, 163, 0.6);
+    font-weight: 600;
+}
+
+.game-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+.game-stats {
+    display: flex;
+    gap: 45px;
+    font-family: monospace;
+}
+
+.game-stats .stat { text-align: center; }
+
+.game-stats .val {
+    font-size: 1.6em;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-shadow: 0 0 12px rgba(0, 255, 163, 0.5);
+}
+
+.game-stats .lbl {
+    font-size: 0.7em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+#snake-canvas {
+    width: 400px;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    background: #060606;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 255, 163, 0.2);
+    box-shadow: inset 0 0 35px rgba(0, 255, 163, 0.06),
+                0 0 30px rgba(0, 255, 163, 0.08);
+    touch-action: none;
+}
+
+.game-btn {
+    padding: 12px 38px;
+    background: var(--gradient-primary);
+    color: var(--background);
+    border: none;
+    border-radius: 30px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 1em;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.game-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--neon-shadow);
+}
+
+.game-hint {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+/* D-pad (touch only) */
+.dpad {
+    display: none;
+    grid-template-columns: repeat(3, 54px);
+    grid-template-rows: repeat(3, 54px);
+    gap: 8px;
+}
+
+.dpad button {
+    background: var(--surface);
+    border: 1px solid rgba(0, 255, 163, 0.25);
+    color: var(--primary-color);
+    border-radius: 12px;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+.dpad button:active { background: rgba(0, 255, 163, 0.15); }
+.dpad .up { grid-column: 2; grid-row: 1; }
+.dpad .left { grid-column: 1; grid-row: 2; }
+.dpad .right { grid-column: 3; grid-row: 2; }
+.dpad .down { grid-column: 2; grid-row: 3; }
+
+@media (max-width: 768px), (pointer: coarse) {
+    .dpad { display: grid; }
+}
+
+/* =========================================================
+   INTRO MODAL + AUTO-TOUR GAME
+   ========================================================= */
+
+/* Contact links — recolor away from default blue */
+.contact-card p a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contact-card p a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(0, 255, 163, 0.6);
+}
+
+/* The [hidden] attribute must win over author display rules,
+   otherwise hidden overlays/sections keep capturing clicks. */
+[hidden] {
+    display: none !important;
+}
+
+/* ----- Intro modal ----- */
+.intro-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 5, 5, 0.78);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    padding: 20px;
+}
+
+.intro-modal.show { opacity: 1; }
+
+.intro-card {
+    background: rgba(17, 17, 17, 0.92);
+    border: 1px solid rgba(0, 255, 163, 0.3);
+    border-radius: 22px;
+    padding: 40px 36px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(0, 255, 163, 0.15);
+    transform: translateY(20px) scale(0.96);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.intro-modal.show .intro-card { transform: translateY(0) scale(1); }
+
+.intro-emoji {
+    font-size: 2.6em;
+    display: block;
+    margin-bottom: 8px;
+    animation: wave 1.6s ease-in-out infinite;
+    transform-origin: 70% 70%;
+}
+
+@keyframes wave {
+    0%, 60%, 100% { transform: rotate(0deg); }
+    15% { transform: rotate(16deg); }
+    30% { transform: rotate(-8deg); }
+    45% { transform: rotate(12deg); }
+}
+
+.intro-title {
+    font-size: 1.8em;
+    margin-bottom: 8px;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.intro-text { color: var(--text-secondary); margin-bottom: 26px; }
+
+.intro-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.intro-btn {
+    padding: 14px 22px;
+    border-radius: 30px;
+    font-family: inherit;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.3s, background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.intro-btn.primary {
+    background: var(--gradient-primary);
+    color: var(--background);
+    border: none;
+}
+
+.intro-btn.ghost {
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid var(--primary-color);
+}
+
+.intro-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--neon-shadow);
+}
+
+.intro-note {
+    margin-top: 22px;
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* ----- Tour game panel — centered overlay on top of the section ----- */
+.tour-game {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 9998;
+    width: 340px;
+    max-width: 92vw;
+    background: rgba(12, 12, 12, 0.97);
+    border: 1px solid rgba(0, 255, 163, 0.3);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 40px rgba(0, 255, 163, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s;
+}
+
+/* dim the page behind so the game clearly sits on top */
+.tour-game::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: rgba(3, 3, 3, 0.55);
+    backdrop-filter: blur(2px);
+}
+
+.tour-game.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+
+.tour-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.82em;
+    color: var(--text-secondary);
+}
+
+.tour-now { flex: 1; }
+.tour-now strong { color: var(--primary-color); }
+.tour-score strong { color: var(--accent-color); font-size: 1.1em; }
+
+.tour-exit {
+    background: rgba(255, 255, 255, 0.06);
+    border: none;
+    color: var(--text-primary);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    flex-shrink: 0;
+}
+
+.tour-exit:hover { background: var(--accent-color); color: #fff; }
+
+#kid-canvas {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 300 / 180;
+    background: #070707;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 255, 163, 0.18);
+    box-shadow: inset 0 0 25px rgba(0, 255, 163, 0.05);
+    touch-action: none;
+}
+
+.tour-dpad {
+    display: none;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 40px);
+    gap: 6px;
+    max-width: 150px;
+    margin: 0 auto;
+}
+
+.tour-dpad button {
+    background: var(--surface);
+    border: 1px solid rgba(0, 255, 163, 0.25);
+    color: var(--primary-color);
+    border-radius: 10px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.tour-dpad button:active { background: rgba(0, 255, 163, 0.18); }
+.tour-dpad .up { grid-column: 2; grid-row: 1; }
+.tour-dpad .left { grid-column: 1; grid-row: 2; }
+.tour-dpad .right { grid-column: 3; grid-row: 2; }
+.tour-dpad .down { grid-column: 2; grid-row: 3; }
+
+.tour-hint {
+    font-size: 0.72em;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.tour-skip {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.74em;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s;
+    align-self: center;
+}
+.tour-skip:hover { color: var(--primary-color); }
+
+/* "Play to unlock" button on a locked section */
+.unlock-play-btn {
+    margin-top: 8px;
+    padding: 11px 24px;
+    background: var(--gradient-primary);
+    color: var(--background);
+    border: none;
+    border-radius: 26px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.25s, box-shadow 0.3s;
+}
+.unlock-play-btn:hover { transform: translateY(-2px); box-shadow: var(--neon-shadow); }
+
+/* Touch / mobile layout for the tour game */
+@media (max-width: 768px), (pointer: coarse) {
+    .tour-dpad { display: grid; }
+}
+
+@media (max-width: 560px) {
+    .tour-hint { display: none; }
+}
+
+/* =========================================================
+   UNLOCK MODE + SECRET ARCADE
+   ========================================================= */
+
+/* Unlock progress meter inside the game panel */
+.unlock-progress {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    height: 22px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.unlock-progress-bar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0;
+    background: var(--gradient-primary);
+    transition: width 0.4s ease;
+}
+
+.unlock-progress-text {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    font-size: 0.72em;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Locked nav links */
+.nav-link.nav-locked {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: auto; /* still catch the click to preventDefault */
+}
+
+.nav-link.nav-locked::before {
+    content: '\f023'; /* lock */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    margin-right: 5px;
+    font-size: 0.8em;
+}
+
+.nav-arcade {
+    color: var(--primary-color) !important;
+}
+
+/* Locked section overlay */
+.locked-section { position: relative; }
+
+.lock-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+    padding: 20px;
+    background: rgba(8, 8, 8, 0.55);
+    backdrop-filter: blur(9px);
+    border-radius: 12px;
+    transition: opacity 0.45s ease;
+}
+
+.lock-overlay.cleared { opacity: 0; }
+
+.lock-overlay i {
+    font-size: 2.4em;
+    color: var(--primary-color);
+    filter: drop-shadow(0 0 12px rgba(0, 255, 163, 0.5));
+}
+
+.lock-overlay p {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.lock-overlay span {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+}
+
+/* ----- "read to unlock" hint toast ----- */
+.break-hint {
+    position: fixed;
+    top: 84px;
+    left: 50%;
+    transform: translate(-50%, -14px);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 90%;
+    padding: 11px 16px;
+    background: rgba(17, 17, 17, 0.92);
+    border: 1px solid rgba(0, 255, 163, 0.3);
+    border-radius: 30px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.break-hint.show { opacity: 1; transform: translate(-50%, 0); }
+.break-hint i { color: var(--primary-color); }
+.break-hint strong { color: var(--text-primary); }
+
+.break-hint-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.95em;
+    padding: 0 2px;
+    transition: color 0.3s;
+}
+.break-hint-close:hover { color: var(--accent-color); }
+
+/* ----- Arcade games ----- */
+.arcade-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+.arcade-tab {
+    padding: 10px 20px;
+    border: 1px solid rgba(0, 255, 163, 0.2);
+    background: var(--surface);
+    color: var(--text-secondary);
+    border-radius: 24px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.92em;
+    transition: all 0.3s;
+}
+
+.arcade-tab.active,
+.arcade-tab:hover {
+    background: var(--gradient-primary);
+    color: var(--background);
+    border-color: transparent;
+}
+
+.arcade-game {
+    max-width: 460px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 28px;
+    border-radius: 20px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.arcade-game h3 { font-size: 1.4em; }
+.arcade-desc { color: var(--text-secondary); font-size: 0.92em; margin-top: -6px; }
+
+.game-btn.small { padding: 8px 20px; font-size: 0.85em; }
+
+/* Reaction */
+.reaction-box {
+    width: 100%;
+    height: 180px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4em;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reaction-box[data-state="idle"]   { background: #1a1a1a; color: var(--text-secondary); }
+.reaction-box[data-state="waiting"]{ background: #b3261e; color: #fff; }
+.reaction-box[data-state="soon"]   { background: #7a1d18; color: #fff; }
+.reaction-box[data-state="ready"]  { background: #00b86b; color: #04130c; }
+.reaction-box[data-state="result"] { background: #0a0a0a; color: var(--primary-color); border-color: rgba(0,255,163,0.3); }
+
+.reaction-result strong { color: var(--primary-color); }
+
+/* Memory match */
+.memory-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    font-size: 0.9em;
+    color: var(--text-secondary);
+}
+.memory-meta strong { color: var(--primary-color); }
+
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.memory-card {
+    aspect-ratio: 1 / 1;
+    border: 1px solid rgba(0, 255, 163, 0.18);
+    border-radius: 10px;
+    background: var(--surface);
+    cursor: pointer;
+    position: relative;
+    font-size: 1.6em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, border-color 0.3s, background 0.3s;
+}
+.memory-card:hover { transform: translateY(-2px); }
+.memory-card .mc-face { display: none; }
+.memory-card .mc-back { display: block; opacity: 0.5; }
+.memory-card.flipped .mc-face,
+.memory-card.matched .mc-face { display: block; }
+.memory-card.flipped .mc-back,
+.memory-card.matched .mc-back { display: none; }
+.memory-card.matched {
+    border-color: var(--primary-color);
+    background: rgba(0, 255, 163, 0.1);
+}
+.memory-win { color: var(--primary-color); font-weight: 600; font-size: 1.1em; }
+
+/* Tic-tac-toe */
+.ttt-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 260px;
+}
+.ttt-cell {
+    aspect-ratio: 1 / 1;
+    border: 1px solid rgba(0, 255, 163, 0.18);
+    border-radius: 10px;
+    background: var(--surface);
+    font-size: 2em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.ttt-cell:hover { background: rgba(0, 255, 163, 0.07); }
+.ttt-cell.x { color: var(--primary-color); }
+.ttt-cell.o { color: var(--accent-color); }
+.ttt-status { color: var(--text-secondary); font-size: 0.95em; min-height: 1.2em; }
+
+@media (max-width: 480px) {
+    .arcade-tab { padding: 8px 14px; font-size: 0.85em; }
 }

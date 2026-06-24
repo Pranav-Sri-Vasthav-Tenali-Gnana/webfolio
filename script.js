@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Multi-text typing effect for hero section
-    const typingTexts = ["Web Developer", "Full Stack Developer", "Data Engineer", "Python Developer"];
+    const typingTexts = ["Python Developer", "Backend Engineer", "AI / ML Engineer"];
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -260,4 +260,66 @@ document.addEventListener("DOMContentLoaded", () => {
             input.parentElement.classList.add('focused');
         }
     });
+});
+
+/* =========================================================
+   FUTURISTIC INTERACTIONS
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    const fine = window.matchMedia('(pointer: fine)').matches;
+
+    // 3D tilt on project cards
+    if (fine) {
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                const px = (e.clientX - r.left) / r.width - 0.5;
+                const py = (e.clientY - r.top) / r.height - 0.5;
+                card.style.transform =
+                    `perspective(800px) rotateX(${-py * 8}deg) rotateY(${px * 10}deg) translateY(-6px)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+        });
+
+        // Magnetic buttons
+        document.querySelectorAll('.primary-btn, .secondary-btn, .game-btn').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const r = btn.getBoundingClientRect();
+                const x = e.clientX - r.left - r.width / 2;
+                const y = e.clientY - r.top - r.height / 2;
+                btn.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+            });
+            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+        });
+    }
+
+    // Text-scramble reveal on section headings
+    const CHARS = '!<>-_\\/[]{}=+*^?#01';
+    function scramble(el) {
+        const final = el.dataset.final || el.textContent;
+        el.dataset.final = final;
+        let frame = 0;
+        const id = setInterval(() => {
+            el.textContent = final.split('').map((c, i) => {
+                if (c === ' ') return ' ';
+                return i < frame / 2 ? final[i] : CHARS[Math.floor(Math.random() * CHARS.length)];
+            }).join('');
+            frame++;
+            if (frame / 2 >= final.length) {
+                clearInterval(id);
+                el.textContent = final;
+            }
+        }, 38);
+    }
+
+    const headObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                scramble(entry.target);
+                headObs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.6 });
+
+    document.querySelectorAll('.section-header h2').forEach(h => headObs.observe(h));
 });

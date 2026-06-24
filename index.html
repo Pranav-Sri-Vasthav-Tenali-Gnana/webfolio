@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -24,6 +24,64 @@
         </div>
     </div>
 
+    <!-- Intro Choice Modal -->
+    <div class="intro-modal" id="intro-modal" hidden>
+        <div class="intro-card">
+            <span class="intro-emoji">👋</span>
+            <h2 class="intro-title">Welcome — pick your vibe</h2>
+            <p class="intro-text">How do you want to go through my portfolio?</p>
+            <div class="intro-actions">
+                <button class="intro-btn primary" id="intro-read">
+                    <i class="fas fa-book-open"></i> Read at my own pace
+                </button>
+                <button class="intro-btn ghost" id="intro-unlock">
+                    <i class="fas fa-unlock"></i> Unlock as I play
+                </button>
+            </div>
+            <p class="intro-note">Reader mode is a clean, normal scroll. Unlock mode hides each section behind a quick fruit-catching mini-game — score 5 points to reveal the next one.</p>
+        </div>
+    </div>
+
+    <!-- Unlock Mini-Game Panel -->
+    <div class="tour-game" id="tour-game" hidden>
+        <div class="tour-bar">
+            <span class="tour-now"><strong id="tour-label">Catch fruit to unlock</strong></span>
+            <span class="tour-score">🍎 <strong id="tour-score">0</strong></span>
+            <button class="tour-exit" id="tour-exit" aria-label="Hide game"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="unlock-progress">
+            <div class="unlock-progress-bar" id="unlock-bar"></div>
+            <span class="unlock-progress-text" id="unlock-text">Next: About &amp; Skills — 5 to go</span>
+        </div>
+        <canvas id="kid-canvas" width="300" height="180"></canvas>
+        <div class="tour-dpad">
+            <button class="up" data-dir="up" aria-label="Up"><i class="fas fa-chevron-up"></i></button>
+            <button class="left" data-dir="left" aria-label="Left"><i class="fas fa-chevron-left"></i></button>
+            <button class="right" data-dir="right" aria-label="Right"><i class="fas fa-chevron-right"></i></button>
+            <button class="down" data-dir="down" aria-label="Down"><i class="fas fa-chevron-down"></i></button>
+        </div>
+        <p class="tour-hint">Arrow keys / WASD &bull; swipe or tap arrows on mobile</p>
+        <button class="tour-skip" id="tour-skip">Rather just read? Skip the game &rarr;</button>
+    </div>
+
+    <!-- Break / Arcade unlock popup -->
+    <div class="intro-modal" id="break-modal" hidden>
+        <div class="intro-card">
+            <span class="intro-emoji">🎉</span>
+            <h2 class="intro-title">You made it to the end!</h2>
+            <p class="intro-text">Thanks for reading through. Fancy a little break? You just unlocked the secret <strong class="neon">Arcade</strong>.</p>
+            <div class="intro-actions">
+                <button class="intro-btn primary" id="break-open">
+                    <i class="fas fa-gamepad"></i> Open the Arcade
+                </button>
+                <button class="intro-btn ghost" id="break-later">
+                    <i class="fas fa-xmark"></i> Maybe later
+                </button>
+            </div>
+            <p class="intro-note">The Arcade now lives in the nav bar whenever you want it.</p>
+        </div>
+    </div>
+
     <!-- Header -->
     <header>
         <nav>
@@ -33,7 +91,9 @@
             <div class="nav-links">
                 <a href="#home" class="nav-link active">Home </a>
                 <a href="#about" class="nav-link">About</a>
+                <a href="#experience" class="nav-link">Experience</a>
                 <a href="#projects" class="nav-link">Projects</a>
+                <a href="#arcade" class="nav-link nav-arcade" hidden><i class="fas fa-gamepad"></i> Arcade</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </div>
             <button class="mobile-menu-btn">
@@ -49,9 +109,18 @@
         <div class="mobile-nav-links">
             <a href="#home" class="nav-link">Home</a>
             <a href="#about" class="nav-link">About</a>
+            <a href="#experience" class="nav-link">Experience</a>
             <a href="#projects" class="nav-link">Projects</a>
+            <a href="#arcade" class="nav-link nav-arcade" hidden><i class="fas fa-gamepad"></i> Arcade</a>
             <a href="#contact" class="nav-link">Contact</a>
         </div>
+    </div>
+
+    <!-- Secret-arcade hint -->
+    <div class="break-hint" id="break-hint" hidden>
+        <i class="fas fa-lock"></i>
+        <span>Psst… read all the way to the end to unlock a little <strong>arcade break</strong>.</span>
+        <button class="break-hint-close" id="break-hint-close" aria-label="Dismiss hint"><i class="fas fa-times"></i></button>
     </div>
 
     <!-- Hero Section -->
@@ -151,7 +220,7 @@
                         </svg>
                     </div>
                 </div>
-                <p class="hero-description">Designing impactful digital solutions with expertise in modern web technologies.</p>
+                <p class="hero-description">Python Developer building REST APIs and service-oriented backends, with hands-on experience training and optimizing AI/ML models — including lightweight language models.</p>
                 <div class="cta-buttons">
                     <a href="#projects" class="primary-btn">View My Work</a>
                     <a href="#contact" class="secondary-btn">Get in Touch</a>
@@ -176,7 +245,6 @@
             </div>
         </div>
     </div>
-    </section>
 
     <!-- About Section -->
     <section id="about" class="section">
@@ -186,82 +254,59 @@
         </div>
         <div class="about-content">
             <div class="about-text">
-                <p>I'm a passionate Full Stack Developer with expertise in creating modern web applications. With a strong foundation in both front-end and back-end development, I strive to build scalable and user-friendly solutions that make a difference.</p>
+                <p>I'm a Python Developer with balanced experience across application/backend development and applied AI/ML. I build REST APIs and service-oriented applications using Python (FastAPI), Java (Spring Boot, Hibernate, Kafka), and Angular &mdash; and I design, train, and optimize ML models in PyTorch, including lightweight language models with quantization and fine-tuning.</p>
+                <p>Today I build Python backend automation services for Intel (via UST Global), and earlier delivered full-stack systems at Dataken Technologies — turning manual engineering workflows into reliable, automated services.</p>
                 <div class="tech-stack">
                 </br>
                     <h3>Tech Stack</h3>
                     <div class="tech-grid">
-                        <div class="tech-item" data-tech="HTML5">
-                            <i class="fab fa-html5"></i>
-                        </div>
-                        <div class="tech-item" data-tech="CSS3">
-                            <i class="fab fa-css3-alt"></i>
-                        </div>
-                        <div class="tech-item" data-tech="JavaScript">
-                            <i class="fab fa-js"></i>
-                        </div>
-                        <div class="tech-item" data-tech="TypeScript">
-                            <i class="fab fa-js-square"></i>
-                        </div>
-                        <div class="tech-item" data-tech="Angular">
-                            <i class="fab fa-angular"></i>
-                        </div>
-                        <div class="tech-item" data-tech="Sass">
-                            <i class="fab fa-sass"></i>
+                        <div class="tech-item" data-tech="Python">
+                            <i class="fab fa-python"></i>
                         </div>
                         <div class="tech-item" data-tech="Java">
                             <i class="fab fa-java"></i>
                         </div>
-                        <div class="tech-item" data-tech="Python">
-                            <i class="fab fa-python"></i>
-                        </div>
-                        <div class="tech-item" data-tech="Node.js">
-                            <i class="fab fa-node-js"></i>
-                        </div>
-                        <div class="tech-item" data-tech="Spring Boot">
-                            <i class="fas fa-leaf"></i> <!-- Placeholder as Spring Boot doesn't have an official icon -->
-                        </div>
-                        <div class="tech-item" data-tech="Jersey">
-                            <i class="fas fa-stream"></i> <!-- Placeholder icon for Jersey -->
-                        </div>
-                        <div class="tech-item" data-tech="REST API">
-                            <i class="fas fa-link"></i>
-                        </div>
-                        <div class="tech-item" data-tech="Postman">
-                            <i class="fas fa-envelope"></i> <!-- Placeholder for Postman -->
-                        </div>
-                        <div class="tech-item" data-tech="Markdown">
-                            <i class="fas fa-file-alt"></i> <!-- Placeholder for Markdown -->
-                        </div>
-                        <div class="tech-item" data-tech="Virtualization">
-                            <i class="fas fa-server"></i>
-                        </div>
-                        <div class="tech-item" data-tech="MySQL">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <div class="tech-item" data-tech="PL/SQL">
-                            <i class="fas fa-database"></i>
-                        </div>
-                        <div class="tech-item" data-tech="Vitess">
-                            <i class="fas fa-tablet-alt"></i> <!-- Placeholder for Vitess -->
-                        </div>
-                        <div class="tech-item" data-tech="Apache Spark">
+                        <div class="tech-item" data-tech="FastAPI">
                             <i class="fas fa-bolt"></i>
                         </div>
-                        <div class="tech-item" data-tech="Hibernate">
-                            <i class="fas fa-leaf"></i> <!-- Placeholder icon for Hibernate -->
+                        <div class="tech-item" data-tech="PyTorch">
+                            <i class="fas fa-fire"></i>
                         </div>
-                        <div class="tech-item" data-tech="Liquibase">
-                            <i class="fas fa-water"></i> <!-- Placeholder icon for Liquibase -->
+                        <div class="tech-item" data-tech="Pandas">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <div class="tech-item" data-tech="NumPy">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="tech-item" data-tech="Spring Boot">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="tech-item" data-tech="Angular">
+                            <i class="fab fa-angular"></i>
+                        </div>
+                        <div class="tech-item" data-tech="REST APIs">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div class="tech-item" data-tech="Docker">
+                            <i class="fab fa-docker"></i>
                         </div>
                         <div class="tech-item" data-tech="Apache Kafka">
                             <i class="fas fa-exchange-alt"></i>
                         </div>
-                        <div class="tech-item" data-tech="Zookeeper">
-                            <i class="fas fa-paw"></i> <!-- Placeholder icon for Zookeeper -->
+                        <div class="tech-item" data-tech="CI/CD">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <div class="tech-item" data-tech="MySQL">
+                            <i class="fas fa-database"></i>
                         </div>
                         <div class="tech-item" data-tech="Keycloak">
                             <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="tech-item" data-tech="Linux">
+                            <i class="fab fa-linux"></i>
+                        </div>
+                        <div class="tech-item" data-tech="Bash">
+                            <i class="fas fa-terminal"></i>
                         </div>
                         <div class="tech-item" data-tech="Git">
                             <i class="fab fa-git-alt"></i>
@@ -269,16 +314,68 @@
                         <div class="tech-item" data-tech="GitHub">
                             <i class="fab fa-github"></i>
                         </div>
-                        <div class="tech-item" data-tech="Poetry">
-                            <i class="fas fa-feather"></i> <!-- Placeholder icon for Poetry -->
-                        </div>
-                        <div class="tech-item" data-tech="Linux Make">
-                            <i class="fas fa-terminal"></i>
-                        </div>
-                        <div class="tech-item" data-tech="PyInstaller">
-                            <i class="fas fa-file-code"></i>
-                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section">
+        <div class="section-header">
+            <h2>Experience &amp; Education</h2>
+            <div class="section-decoration"></div>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">Feb 2025 &ndash; Present</span>
+                    <h3>Python Developer</h3>
+                    <h4>UST Global <span class="timeline-client">(Client: Intel)</span></h4>
+                    <ul>
+                        <li>Built Python backend automation services to retrieve system and firmware information across multiple Intel platforms, cutting manual diagnostic effort for validation teams by ~40%.</li>
+                        <li>Designed internal REST APIs automating WMI queries, audio-frequency checks, and system-health diagnostics, improving triage turnaround by ~25%.</li>
+                        <li>Implemented robust error-handling, structured logging, and automated UART/system-log parsing to strengthen API reliability.</li>
+                    </ul>
+                    <div class="timeline-tags">
+                        <span>Python</span><span>REST API</span><span>WMI Scripting</span><span>UEFI/EFI</span>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">Nov 2022 &ndash; Sep 2024</span>
+                    <h3>Full Stack Developer</h3>
+                    <h4>Dataken Technologies</h4>
+                    <ul>
+                        <li>Built backend services with Java, Spring Boot, and Python (FastAPI) with Angular UI integration, improving usability and reducing response latency for internal users.</li>
+                        <li>Designed and consumed REST APIs connecting Java/Spring Boot services with Python utilities to validate system readiness across OS environments, reducing deployment issues by ~15%.</li>
+                        <li>Troubleshot production logs and resolved backend/environment issues, streamlining deployment workflows.</li>
+                    </ul>
+                    <div class="timeline-tags">
+                        <span>Java</span><span>Spring Boot</span><span>FastAPI</span><span>Angular</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="education-grid">
+            <div class="edu-card">
+                <i class="fas fa-graduation-cap"></i>
+                <div>
+                    <h3>M.Tech, Data Engineering</h3>
+                    <p class="edu-school">IIT Jodhpur, Rajasthan</p>
+                    <p class="edu-meta">2024 &ndash; 2026 &nbsp;&bull;&nbsp; GPA 8.34/10</p>
+                </div>
+            </div>
+            <div class="edu-card">
+                <i class="fas fa-graduation-cap"></i>
+                <div>
+                    <h3>B.Tech, Computer Science &amp; Engineering</h3>
+                    <p class="edu-school">Presidency University, Bangalore</p>
+                    <p class="edu-meta">2018 &ndash; 2022 &nbsp;&bull;&nbsp; GPA 7.39/10</p>
                 </div>
             </div>
         </div>
@@ -292,276 +389,145 @@
         </div>
         <div class="projects-filter">
             <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="web">Web Dev</button>
-            <button class="filter-btn" data-filter="app">App Dev</button>
+            <button class="filter-btn" data-filter="aiml">AI / ML</button>
+            <button class="filter-btn" data-filter="data">Data Engineering</button>
+            <button class="filter-btn" data-filter="mlops">MLOps</button>
         </div>
         <div class="project-gallery">
-            <div class="project-card" data-category="all">
-                <div class="decorative-banner">
-                    <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg" style="margin-top: 80px;">
-                        <!-- Gradient definitions -->
-                        <defs>
-                          <linearGradient id="dark-cyber-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#0A0A0A"/>
-                            <stop offset="100%" style="stop-color:#1A1A1A"/>
-                          </linearGradient>
-                          <!-- Glow filter -->
-                          <filter id="neon-glow">
-                            <feGaussianBlur stdDeviation="1" result="blur"/>
-                            <feComposite in="blur" operator="over" in2="SourceGraphic"/>
-                          </filter>
-                          <!-- Scanner line animation -->
-                          <linearGradient id="scanner-line" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#00ff41;stop-opacity:0"/>
-                            <stop offset="50%" style="stop-color:#00ff41;stop-opacity:0.2"/>
-                            <stop offset="100%" style="stop-color:#00ff41;stop-opacity:0"/>
-                          </linearGradient>
-                        </defs>
-                      
-                        <!-- Dark background -->
-                        <rect x="0" y="0" width="800" height="240" fill="#000000"/>
-                        
-                        <!-- Background matrix effect -->
-                        <g opacity="0.1">
-                          <rect x="0" y="0" width="800" height="240" fill="url(#scanner-line)"/>
-                          <!-- Vertical scan lines -->
-                          <path d="M0 0 L0 240 M40 0 L40 240 M80 0 L80 240 M120 0 L120 240" 
-                                stroke="#00ff41" stroke-width="0.5" stroke-dasharray="1,3"/>
-                          <path d="M720 0 L720 240 M760 0 L760 240 M800 0 L800 240" 
-                                stroke="#00ff41" stroke-width="0.5" stroke-dasharray="1,3"/>
-                        </g>
-                      
-                        <!-- Main frame -->
-                        <path d="M20 40 L100 40 L120 60 L680 60 L700 40 L780 40" 
-                              fill="none" stroke="#00ff41" stroke-width="0.5" opacity="0.3"/>
-                        <path d="M20 200 L100 200 L120 180 L680 180 L700 200 L780 200" 
-                              fill="none" stroke="#00ff41" stroke-width="0.5" opacity="0.3"/>
-                        
-                        <!-- Side decorative elements -->
-                        <g filter="url(#neon-glow)" opacity="0.5">
-                          <!-- Left side -->
-                          <rect x="30" y="80" width="15" height="80" fill="none" stroke="#00ff41" stroke-width="0.5"/>
-                          <circle cx="37.5" cy="90" r="2" fill="#00ff41"/>
-                          <circle cx="37.5" cy="150" r="2" fill="#00ff41"/>
-                          <!-- Right side -->
-                          <rect x="755" y="80" width="15" height="80" fill="none" stroke="#00ff41" stroke-width="0.5"/>
-                          <circle cx="762.5" cy="90" r="2" fill="#00ff41"/>
-                          <circle cx="762.5" cy="150" r="2" fill="#00ff41"/>
-                        </g>
-                      
-                        <!-- Quote text with glow effect -->
-                        <g filter="url(#neon-glow)">
-                          <text x="400" y="100" fill="#00ff41" font-family="monospace" font-size="24" text-anchor="middle" font-weight="bold">
-                            "Engineering is the closest thing to magic
-                          </text>
-                          <text x="400" y="140" fill="#00ff41" font-family="monospace" font-size="24" text-anchor="middle" font-weight="bold">
-                            that exists in the world"
-                          </text>
-                        </g>
-                        
-                        <!-- Tech hex patterns -->
-                        <g opacity="0.2">
-                          <!-- Left patterns -->
-                          <path d="M60 70 L70 60 L80 70 L70 80 Z" stroke="#00ff41" fill="none" stroke-width="0.5"/>
-                          <path d="M60 170 L70 160 L80 170 L70 180 Z" stroke="#00ff41" fill="none" stroke-width="0.5"/>
-                          <!-- Right patterns -->
-                          <path d="M720 70 L730 60 L740 70 L730 80 Z" stroke="#00ff41" fill="none" stroke-width="0.5"/>
-                          <path d="M720 170 L730 160 L740 170 L730 180 Z" stroke="#00ff41" fill="none" stroke-width="0.5"/>
-                        </g>
-                      
-                        <!-- Corner indicators -->
-                        <g filter="url(#neon-glow)">
-                          <circle cx="20" cy="40" r="2" fill="#00ff41" opacity="0.8"/>
-                          <circle cx="780" cy="40" r="2" fill="#00ff41" opacity="0.8"/>
-                          <circle cx="20" cy="200" r="2" fill="#00ff41" opacity="0.8"/>
-                          <circle cx="780" cy="200" r="2" fill="#00ff41" opacity="0.8"/>
-                        </g>
-                      
-                        <!-- Subtle horizontal lines -->
-                        <g opacity="0.1">
-                          <line x1="100" y1="120" x2="700" y2="120" stroke="#00ff41" stroke-width="0.5" stroke-dasharray="1,10"/>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-            <!-- Project Card 1 -->
-            <div class="project-card" data-category="web">
+            <!-- Project Card 1: ALLM-1 -->
+            <div class="project-card" data-category="aiml">
                 <div class="project-image">
-                    <img class="fa-solid fa-house-medical-circle-check">
-                    <i class="fa-solid fa-house-medical-circle-check"></i>
+                    <i class="fas fa-brain project-icon"></i>
                     <div class="project-overlay">
                         <div class="project-links">
-                            <a href="https://github.com/Pranav-Sri-Vasthav-Tenali-Gnana/Disease_prediction" class="project-link" target="_blank">
+                            <a href="https://github.com/Pranav-Sri-Vasthav-Tenali-Gnana/ALLM-1" class="project-link" target="_blank">
                                 <i class="fab fa-github"></i>
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="project-info">
-                    <h3>Disease_prediction</h3>
-                    <p>A sophisticated application built with Python, utilizing advanced algorithms for accurate disease prediction and data analysis.</p>
+                    <span class="project-badge">Flagship</span>
+                    <h3>Adaptive Lite Language Model (ALLM-1)</h3>
+                    <p>A lightweight text-understanding model with a modular architecture for summarization and classification. Built the full training/inference pipeline with hyperparameter tuning and uint8 quantization to cut model size and latency.</p>
+                    <div class="project-tags">
+                        <span>PyTorch</span>
+                        <span>Quantization</span>
+                        <span>LLM</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Project Card 2: MLOps Housing Pipeline -->
+            <div class="project-card" data-category="mlops">
+                <div class="project-image">
+                    <i class="fas fa-infinity project-icon"></i>
+                    <div class="project-overlay">
+                        <div class="project-links">
+                            <a href="https://github.com/Pranav-Sri-Vasthav-Tenali-Gnana/mlops_housing_pipeline" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <h3>MLOps Housing Pipeline</h3>
+                    <p>End-to-end MLOps pipeline for a housing-price regression model &mdash; covering data prep, training, packaging, and automated CI/CD deployment with Docker for reproducible, production-ready runs.</p>
                     <div class="project-tags">
                         <span>Python</span>
-                        <span>Django</span>
-                        <span>Scss</span>
+                        <span>Docker</span>
+                        <span>CI/CD</span>
                     </div>
                 </div>
             </div>
-            <div class="project-card" data-category="app">
+            <!-- Project Card 3: MapReduce & Apache Spark -->
+            <div class="project-card" data-category="data">
                 <div class="project-image">
-                    <img class="fa-solid fa-house-medical-circle-check">
-                    <i class="fa-solid fa-house-medical-circle-check"></i>
+                    <i class="fas fa-bolt project-icon"></i>
                     <div class="project-overlay">
                         <div class="project-links">
-                            <a href="https://github.com/Pranav-Sri-Vasthav-Tenali-Gnana/virtual-assistant" class="project-link" target="_blank">
+                            <a href="https://github.com/Pranav-Sri-Vasthav-Tenali-Gnana/MapReduce-and-Apache-Spark" class="project-link" target="_blank">
                                 <i class="fab fa-github"></i>
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="project-info">
-                    <h3>virtual-assistant</h3>
-                    <p>An intelligent virtual assistant for managing daily tasks like reminders, to-do lists, and quick info.</p>
+                    <h3>MapReduce &amp; Apache Spark</h3>
+                    <p>Distributed big-data processing built on the MapReduce paradigm and Apache Spark &mdash; implementing scalable data transformations and aggregations over large datasets for high-throughput analytics.</p>
                     <div class="project-tags">
+                        <span>Apache Spark</span>
+                        <span>MapReduce</span>
                         <span>Python</span>
-                        <span>tkinter</span>
-                        <span>bs4</span>
                     </div>
                 </div>
             </div>
-            <div class="project-card" data-category="app">
+            <!-- Project Card 4: MinHash + LSH Similarity Detection -->
+            <div class="project-card" data-category="data">
                 <div class="project-image">
-                    <img class="fa-solid fa-house-medical-circle-check">
-                    <i class="fa-solid fa-house-medical-circle-check"></i>
+                    <i class="fas fa-fingerprint project-icon"></i>
                     <div class="project-overlay">
                         <div class="project-links">
-                            <a href="https://github.com/Pranav-Sri-Vasthav-Tenali-Gnana/heart-disease-prediction" class="project-link" target="_blank">
+                            <a href="https://github.com/Pranav-Sri-Vasthav-Tenali-Gnana/minhash-lsh-similarity-detection" class="project-link" target="_blank">
                                 <i class="fab fa-github"></i>
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="project-info">
-                    <h3>heart-disease-prediction</h3>
-                    <p>Creates correlation heatmap using Seaborn to analyze heart disease.</p>
+                    <h3>Near-Duplicate Detection (MinHash + LSH)</h3>
+                    <p>Scalable near-duplicate document detection using MinHash signatures and Locality-Sensitive Hashing — approximating Jaccard similarity across large text corpora without pairwise comparison, for fast deduplication at scale.</p>
                     <div class="project-tags">
-                        <span>Seaborn</span>
-                        <span>Pandas</span>
-                        <span>Matplotlib</span>
+                        <span>MinHash</span>
+                        <span>LSH</span>
+                        <span>Python</span>
                     </div>
                 </div>
             </div>
-            <div class="project-card" data-category="web">
-                <div class="project-image">
-                    <img class="fa-solid fa-house-medical-circle-check">
-                    <i class="fa-solid fa-house-medical-circle-check"></i>
-                    <div class="project-overlay">
-                        <div class="project-links">
-                            <a href="https://github.com/Pranav-Sri-Vasthav-Tenali-Gnana/react-projects/tree/main/todo-list" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-info">
-                    <h3>Todo-List</h3>
-                    <p>A powerful React Todo-List app for organizing tasks and boosting productivity efficiently</p>
-                    <div class="project-tags">
-                        <span>React</span>
-                        <span>JavaScript</span>
-                        <span>Bootstrap</span>
-                    </div>
-                </div>
+        </div>
+    </section>
+
+    <!-- Arcade Section (secret — revealed after reading to the end) -->
+    <section id="arcade" class="section" hidden>
+        <div class="section-header">
+            <h2>The Arcade</h2>
+            <div class="section-decoration"></div>
+        </div>
+        <p class="arcade-sub">You earned it 🎮 &mdash; a few tiny games to unwind. Pick one:</p>
+
+        <div class="arcade-tabs">
+            <button class="arcade-tab active" data-game="reaction"><i class="fas fa-bolt"></i> Reaction</button>
+            <button class="arcade-tab" data-game="memory"><i class="fas fa-clone"></i> Memory Match</button>
+            <button class="arcade-tab" data-game="ttt"><i class="fas fa-hashtag"></i> Tic-Tac-Toe</button>
+        </div>
+
+        <!-- Reaction game -->
+        <div class="arcade-game glow-card active" data-game="reaction">
+            <h3>Reaction Test</h3>
+            <p class="arcade-desc">Wait for green, then tap as fast as you can.</p>
+            <div class="reaction-box" id="reaction-box" data-state="idle">Click to start</div>
+            <p class="reaction-result" id="reaction-result">Best: <strong id="reaction-best">—</strong></p>
+        </div>
+
+        <!-- Memory match game -->
+        <div class="arcade-game glow-card" data-game="memory" hidden>
+            <h3>Memory Match</h3>
+            <p class="arcade-desc">Flip the cards and match all the pairs.</p>
+            <div class="memory-meta">
+                <span>Moves: <strong id="memory-moves">0</strong></span>
+                <button class="game-btn small" id="memory-restart">New game</button>
             </div>
-            <div class="project-card" data-category="all">
-                <div class="decorative-banner">
-                    <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg" style="margin-top: 65px;">
-                        <!-- Gradient definitions -->
-                        <defs>
-                          <linearGradient id="dark-cyber-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#0A0A0A"/>
-                            <stop offset="100%" style="stop-color:#1A1A1A"/>
-                          </linearGradient>
-                          <!-- Glow filter -->
-                          <filter id="neon-glow">
-                            <feGaussianBlur stdDeviation="1" result="blur"/>
-                            <feComposite in="blur" operator="over" in2="SourceGraphic"/>
-                          </filter>
-                          <!-- Scanner line animation -->
-                          <linearGradient id="scanner-line" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#00ff41;stop-opacity:0"/>
-                            <stop offset="50%" style="stop-color:#00ff41;stop-opacity:0.2"/>
-                            <stop offset="100%" style="stop-color:#00ff41;stop-opacity:0"/>
-                          </linearGradient>
-                        </defs>
-                      
-                        <!-- Dark background -->
-                        <rect x="0" y="0" width="800" height="240" fill="#000000"/>
-                        
-                        <!-- Background matrix effect -->
-                        <g opacity="0.1">
-                          <rect x="0" y="0" width="800" height="240" fill="url(#scanner-line)"/>
-                          <!-- Vertical scan lines -->
-                          <path d="M0 0 L0 240 M40 0 L40 240 M80 0 L80 240 M120 0 L120 240" 
-                                stroke="#00ff41" stroke-width="0.5" stroke-dasharray="1,3"/>
-                          <path d="M720 0 L720 240 M760 0 L760 240 M800 0 L800 240" 
-                                stroke="#00ff41" stroke-width="0.5" stroke-dasharray="1,3"/>
-                        </g>
-                      
-                        <!-- Main frame -->
-                        <path d="M20 40 L100 40 L120 60 L680 60 L700 40 L780 40" 
-                              fill="none" stroke="#00ff41" stroke-width="0.5" opacity="0.3"/>
-                        <path d="M20 200 L100 200 L120 180 L680 180 L700 200 L780 200" 
-                              fill="none" stroke="#00ff41" stroke-width="0.5" opacity="0.3"/>
-                        
-                        <!-- Side decorative elements -->
-                        <g filter="url(#neon-glow)" opacity="0.5">
-                          <!-- Left side -->
-                          <rect x="30" y="80" width="15" height="80" fill="none" stroke="#00ff41" stroke-width="0.5"/>
-                          <circle cx="37.5" cy="90" r="2" fill="#00ff41"/>
-                          <circle cx="37.5" cy="150" r="2" fill="#00ff41"/>
-                          <!-- Right side -->
-                          <rect x="755" y="80" width="15" height="80" fill="none" stroke="#00ff41" stroke-width="0.5"/>
-                          <circle cx="762.5" cy="90" r="2" fill="#00ff41"/>
-                          <circle cx="762.5" cy="150" r="2" fill="#00ff41"/>
-                        </g>
-                      
-                        <!-- Quote text with glow effect -->
-                        <g filter="url(#neon-glow)">
-                          <text x="400" y="100" fill="#00ff41" font-family="monospace" font-size="24" text-anchor="middle" font-weight="bold">
-                            "Engineering is the closest thing to magic
-                          </text>
-                          <text x="400" y="140" fill="#00ff41" font-family="monospace" font-size="24" text-anchor="middle" font-weight="bold">
-                            that exists in the world"
-                          </text>
-                        </g>
-                        
-                        <!-- Tech hex patterns -->
-                        <g opacity="0.2">
-                          <!-- Left patterns -->
-                          <path d="M60 70 L70 60 L80 70 L70 80 Z" stroke="#00ff41" fill="none" stroke-width="0.5"/>
-                          <path d="M60 170 L70 160 L80 170 L70 180 Z" stroke="#00ff41" fill="none" stroke-width="0.5"/>
-                          <!-- Right patterns -->
-                          <path d="M720 70 L730 60 L740 70 L730 80 Z" stroke="#00ff41" fill="none" stroke-width="0.5"/>
-                          <path d="M720 170 L730 160 L740 170 L730 180 Z" stroke="#00ff41" fill="none" stroke-width="0.5"/>
-                        </g>
-                      
-                        <!-- Corner indicators -->
-                        <g filter="url(#neon-glow)">
-                          <circle cx="20" cy="40" r="2" fill="#00ff41" opacity="0.8"/>
-                          <circle cx="780" cy="40" r="2" fill="#00ff41" opacity="0.8"/>
-                          <circle cx="20" cy="200" r="2" fill="#00ff41" opacity="0.8"/>
-                          <circle cx="780" cy="200" r="2" fill="#00ff41" opacity="0.8"/>
-                        </g>
-                      
-                        <!-- Subtle horizontal lines -->
-                        <g opacity="0.1">
-                          <line x1="100" y1="120" x2="700" y2="120" stroke="#00ff41" stroke-width="0.5" stroke-dasharray="1,10"/>
-                        </g>
-                    </svg>
-                <!-- Add more project cards here -->
-            </div>
-            </div>
+            <div class="memory-grid" id="memory-grid"></div>
+            <p class="memory-win" id="memory-win" hidden>Solved! 🎉</p>
+        </div>
+
+        <!-- Tic-tac-toe game -->
+        <div class="arcade-game glow-card" data-game="ttt" hidden>
+            <h3>Tic-Tac-Toe</h3>
+            <p class="arcade-desc">You're <strong>X</strong>. Beat the computer (or try to).</p>
+            <div class="ttt-board" id="ttt-board"></div>
+            <p class="ttt-status" id="ttt-status">Your move</p>
+            <button class="game-btn small" id="ttt-restart">Restart</button>
+        </div>
     </section>
 
     <!-- Contact Section -->
@@ -608,10 +574,12 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 Pranav Sri Vasthav. All rights reserved.</p>
+            <p>&copy; 2026 Pranav Sri Vasthav. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="script.js"></script>
+    <script src="tour.js"></script>
+    <script src="arcade.js"></script>
 </body>
 </html>
