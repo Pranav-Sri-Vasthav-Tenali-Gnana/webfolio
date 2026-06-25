@@ -97,18 +97,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function scheduleBreak() {
         if (breakScheduled || arcadeUnlocked) return;
         breakScheduled = true;
-        setTimeout(unlockArcade, 3000);
+        setTimeout(unlockArcade, 1500);
     }
     function unlockArcade() {
         if (arcadeUnlocked) return;
         arcadeUnlocked = true;
-        document.querySelectorAll('.nav-arcade').forEach(a => { a.hidden = false; });
         if (hint && !hint.hidden) { hint.classList.remove('show'); setTimeout(() => hint.hidden = true, 300); }
         open(breakModal);
     }
+    // "Maybe later" just dismisses — the arcade stays out of the nav.
     breakLater.addEventListener('click', () => close(breakModal));
+    // The arcade (and its nav link) only appear when they choose to open it.
     breakOpen.addEventListener('click', () => {
         close(breakModal);
+        document.querySelectorAll('.nav-arcade').forEach(a => { a.hidden = false; });
         const arc = document.getElementById('arcade');
         arc.hidden = false;
         arc.classList.add('visible');

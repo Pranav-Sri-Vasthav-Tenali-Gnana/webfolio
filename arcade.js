@@ -236,6 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const wrap = arcade.querySelector('.arcade-game[data-game="fruit"]');
 
         let kid, dir, nextDir, fruit, fruitChar, score, loop, running = false;
+        let target = null;      // tapped destination cell (auto-walk there)
+        let keyMoving = false;  // continuous motion (keyboard / desktop)
+        const finePointer = window.matchMedia('(pointer: fine)').matches;
         let best = parseInt(localStorage.getItem('fruitBest') || '0', 10);
         bestEl.textContent = best;
 
@@ -246,9 +249,19 @@ document.addEventListener('DOMContentLoaded', () => {
             fruit = f;
             fruitChar = FRUITS[Math.floor(Math.random() * FRUITS.length)];
         }
-        function setDir(x, y) { nextDir = { x, y }; }
-
         function tick() {
+            // walk toward a tapped target, one step per tick
+            if (target) {
+                const dx = target.x - kid.x, dy = target.y - kid.y;
+                if (dx === 0 && dy === 0) {
+                    target = null;
+                } else if (Math.abs(dx) >= Math.abs(dy)) {
+                    nextDir = { x: Math.sign(dx), y: 0 };
+                } else {
+                    nextDir = { x: 0, y: Math.sign(dy) };
+                }
+            }
+            if (!target && !keyMoving) { draw(); return; } // idle until input
             dir = nextDir;
             kid.x = (kid.x + dir.x + COLS) % COLS;
             kid.y = (kid.y + dir.y + ROWS) % ROWS;
@@ -261,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('fruitBest', best);
                 }
                 placeFruit();
+                if (target) target = null; // tap mode: stop after catching, wait for next tap
             }
             draw();
         }
@@ -288,6 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
             kid = { x: 4, y: 3 };
             dir = { x: 1, y: 0 };
             nextDir = { x: 1, y: 0 };
+            target = null;
+            keyMoving = finePointer; // desktop glides as before; touch waits for a tap
             score = 0;
             scoreEl.textContent = '0';
             placeFruit();
@@ -300,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         restart.addEventListener('click', start);
 
-        // keyboard — only while the fruit tab is visible & running
+        // keyboard (desktop) — continuous movement, unchanged
         const keymap = {
             ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0],
             w: [0, -1], s: [0, 1], a: [-1, 0], d: [1, 0], W: [0, -1], S: [0, 1], A: [-1, 0], D: [1, 0]
@@ -308,25 +324,29 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('keydown', e => {
             if (running && !wrap.hidden && keymap[e.key]) {
                 e.preventDefault();
-                setDir(keymap[e.key][0], keymap[e.key][1]);
+                nextDir = { x: keymap[e.key][0], y: keymap[e.key][1] };
+                keyMoving = true;
+                target = null;
             }
         });
 
-        // d-pad
-        const dirs = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
-        wrap.querySelectorAll('.arcade-dpad button').forEach(b => {
-            b.addEventListener('click', () => { const m = dirs[b.dataset.dir]; if (m) setDir(m[0], m[1]); });
-        });
-
-        // swipe
-        let sx = null, sy = null;
-        canvas.addEventListener('touchstart', e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
-        canvas.addEventListener('touchmove', e => {
-            if (sx === null) return;
-            const t = e.touches[0]; const dx = t.clientX - sx, dy = t.clientY - sy;
-            if (Math.abs(dx) + Math.abs(dy) < 20) return;
-            if (Math.abs(dx) > Math.abs(dy)) setDir(dx > 0 ? 1 : -1, 0); else setDir(0, dy > 0 ? 1 : -1);
-            sx = null; sy = null; e.preventDefault();
+        // tap / click — send the kid to the tapped cell (ideal for touch)
+        function tapAt(clientX, clientY) {
+            if (!running) return;
+            const r = canvas.getBoundingClientRect();
+            const cx = Math.floor((clientX - r.left) / r.width * COLS);
+            const cy = Math.floor((clientY - r.top) / r.height * ROWS);
+            target = {
+                x: Math.max(0, Math.min(COLS - 1, cx)),
+                y: Math.max(0, Math.min(ROWS - 1, cy))
+            };
+            keyMoving = false;
+        }
+        canvas.addEventListener('click', e => tapAt(e.clientX, e.clientY));
+        canvas.addEventListener('touchstart', e => {
+            const t = e.touches[0];
+            tapAt(t.clientX, t.clientY);
+            e.preventDefault(); // also suppresses the emulated click
         }, { passive: false });
 
         return { start, stop };
