@@ -1,7 +1,9 @@
-// Secret arcade: three small games + tab switching
+// Secret arcade: four small games + tab switching
 document.addEventListener('DOMContentLoaded', () => {
     const arcade = document.getElementById('arcade');
     if (!arcade) return;
+
+    let fruitCtrl = null; // set up by fruitGame() below
 
     /* ---------- tab switching ---------- */
     const tabs = arcade.querySelectorAll('.arcade-tab');
@@ -16,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 g.classList.toggle('active', on);
                 g.hidden = !on;
             });
+            // start/stop the fruit game with its tab
+            if (fruitCtrl) { target === 'fruit' ? fruitCtrl.start() : fruitCtrl.stop(); }
         });
     });
 
@@ -214,5 +218,117 @@ document.addEventListener('DOMContentLoaded', () => {
 
         restart.addEventListener('click', build);
         build();
+    })();
+
+    /* =====================================================
+       4. FRUIT CATCH (kid grabs fruit — score based)
+       ===================================================== */
+    fruitCtrl = (function fruitGame() {
+        const canvas = document.getElementById('fruit-canvas');
+        if (!canvas) return null;
+        const ctx = canvas.getContext('2d');
+        const COLS = 10, ROWS = 6;
+        const CW = canvas.width / COLS, CH = canvas.height / ROWS;
+        const FRUITS = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍒', '🥝']; // no peach
+        const scoreEl = document.getElementById('fruit-score');
+        const bestEl = document.getElementById('fruit-best');
+        const restart = document.getElementById('fruit-restart');
+        const wrap = arcade.querySelector('.arcade-game[data-game="fruit"]');
+
+        let kid, dir, nextDir, fruit, fruitChar, score, loop, running = false;
+        let best = parseInt(localStorage.getItem('fruitBest') || '0', 10);
+        bestEl.textContent = best;
+
+        function placeFruit() {
+            let f;
+            do { f = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) }; }
+            while (f.x === kid.x && f.y === kid.y);
+            fruit = f;
+            fruitChar = FRUITS[Math.floor(Math.random() * FRUITS.length)];
+        }
+        function setDir(x, y) { nextDir = { x, y }; }
+
+        function tick() {
+            dir = nextDir;
+            kid.x = (kid.x + dir.x + COLS) % COLS;
+            kid.y = (kid.y + dir.y + ROWS) % ROWS;
+            if (kid.x === fruit.x && kid.y === fruit.y) {
+                score++;
+                scoreEl.textContent = score;
+                if (score > best) {
+                    best = score;
+                    bestEl.textContent = best;
+                    localStorage.setItem('fruitBest', best);
+                }
+                placeFruit();
+            }
+            draw();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(0,255,163,0.06)';
+            ctx.lineWidth = 1;
+            for (let i = 1; i < COLS; i++) { ctx.beginPath(); ctx.moveTo(i * CW, 0); ctx.lineTo(i * CW, canvas.height); ctx.stroke(); }
+            for (let j = 1; j < ROWS; j++) { ctx.beginPath(); ctx.moveTo(0, j * CH); ctx.lineTo(canvas.width, j * CH); ctx.stroke(); }
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.font = '22px serif';
+            ctx.shadowColor = 'rgba(255,0,255,0.7)';
+            ctx.shadowBlur = 12;
+            ctx.fillText(fruitChar, fruit.x * CW + CW / 2, fruit.y * CH + CH / 2 + 1);
+            ctx.shadowColor = 'rgba(0,255,163,0.8)';
+            ctx.shadowBlur = 10;
+            ctx.font = '24px serif';
+            ctx.fillText('🧒', kid.x * CW + CW / 2, kid.y * CH + CH / 2 + 1);
+            ctx.shadowBlur = 0;
+        }
+
+        function start() {
+            kid = { x: 4, y: 3 };
+            dir = { x: 1, y: 0 };
+            nextDir = { x: 1, y: 0 };
+            score = 0;
+            scoreEl.textContent = '0';
+            placeFruit();
+            draw();
+            clearInterval(loop);
+            loop = setInterval(tick, 180);
+            running = true;
+        }
+        function stop() { clearInterval(loop); running = false; }
+
+        restart.addEventListener('click', start);
+
+        // keyboard — only while the fruit tab is visible & running
+        const keymap = {
+            ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0],
+            w: [0, -1], s: [0, 1], a: [-1, 0], d: [1, 0], W: [0, -1], S: [0, 1], A: [-1, 0], D: [1, 0]
+        };
+        window.addEventListener('keydown', e => {
+            if (running && !wrap.hidden && keymap[e.key]) {
+                e.preventDefault();
+                setDir(keymap[e.key][0], keymap[e.key][1]);
+            }
+        });
+
+        // d-pad
+        const dirs = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+        wrap.querySelectorAll('.arcade-dpad button').forEach(b => {
+            b.addEventListener('click', () => { const m = dirs[b.dataset.dir]; if (m) setDir(m[0], m[1]); });
+        });
+
+        // swipe
+        let sx = null, sy = null;
+        canvas.addEventListener('touchstart', e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
+        canvas.addEventListener('touchmove', e => {
+            if (sx === null) return;
+            const t = e.touches[0]; const dx = t.clientX - sx, dy = t.clientY - sy;
+            if (Math.abs(dx) + Math.abs(dy) < 20) return;
+            if (Math.abs(dx) > Math.abs(dy)) setDir(dx > 0 ? 1 : -1, 0); else setDir(0, dy > 0 ? 1 : -1);
+            sx = null; sy = null; e.preventDefault();
+        }, { passive: false });
+
+        return { start, stop };
     })();
 });

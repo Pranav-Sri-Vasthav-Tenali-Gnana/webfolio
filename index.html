@@ -498,6 +498,7 @@
             <button class="arcade-tab active" data-game="reaction"><i class="fas fa-bolt"></i> Reaction</button>
             <button class="arcade-tab" data-game="memory"><i class="fas fa-clone"></i> Memory Match</button>
             <button class="arcade-tab" data-game="ttt"><i class="fas fa-hashtag"></i> Tic-Tac-Toe</button>
+            <button class="arcade-tab" data-game="fruit"><i class="fas fa-seedling"></i> Fruit Catch</button>
         </div>
 
         <!-- Reaction game -->
@@ -527,6 +528,25 @@
             <div class="ttt-board" id="ttt-board"></div>
             <p class="ttt-status" id="ttt-status">Your move</p>
             <button class="game-btn small" id="ttt-restart">Restart</button>
+        </div>
+
+        <!-- Fruit Catch game -->
+        <div class="arcade-game glow-card" data-game="fruit" hidden>
+            <h3>Fruit Catch</h3>
+            <p class="arcade-desc">Steer the kid to grab fruit — no timer, just rack up points.</p>
+            <div class="memory-meta">
+                <span>Score: <strong id="fruit-score">0</strong></span>
+                <span>Best: <strong id="fruit-best">0</strong></span>
+                <button class="game-btn small" id="fruit-restart">Restart</button>
+            </div>
+            <canvas id="fruit-canvas" width="320" height="200"></canvas>
+            <div class="tour-dpad arcade-dpad">
+                <button class="up" data-dir="up" aria-label="Up"><i class="fas fa-chevron-up"></i></button>
+                <button class="left" data-dir="left" aria-label="Left"><i class="fas fa-chevron-left"></i></button>
+                <button class="right" data-dir="right" aria-label="Right"><i class="fas fa-chevron-right"></i></button>
+                <button class="down" data-dir="down" aria-label="Down"><i class="fas fa-chevron-down"></i></button>
+            </div>
+            <p class="game-hint">Arrow keys / WASD &bull; swipe or tap arrows</p>
         </div>
     </section>
 
