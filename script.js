@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
             loadingScreen.style.display = 'none';
         }, 300);
-    }, 1500);
+    }, 600);
 
     // Mobile menu functionality
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Multi-text typing effect for hero section
-    const typingTexts = ["Python Developer", "Backend Engineer", "AI / ML Engineer"];
+    const typingTexts = ["Backend Engineer", "Python & Java Developer", "LLM Systems Builder"];
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Magnetic buttons
-        document.querySelectorAll('.primary-btn, .secondary-btn, .game-btn').forEach(btn => {
+        document.querySelectorAll('.primary-btn, .secondary-btn').forEach(btn => {
             btn.addEventListener('mousemove', e => {
                 const r = btn.getBoundingClientRect();
                 const x = e.clientX - r.left - r.width / 2;

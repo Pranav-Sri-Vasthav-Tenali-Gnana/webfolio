@@ -270,5 +270,7 @@ class ParticleBackground {
 
 // Initialize when the window loads
 window.addEventListener('load', () => {
-    new ParticleBackground('particle-canvas');
+    if (document.getElementById('particle-canvas')) {
+        new ParticleBackground('particle-canvas');
+    }
 });
